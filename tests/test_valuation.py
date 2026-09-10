@@ -5,6 +5,9 @@ from dcf_core.valuation import (
     present_value,
     terminal_value,
     present_value_terminal_value,
+    enterprise_value,
+    equity_value,
+    implied_share_price,
 )
 
 def test_terminal_value():
@@ -37,3 +40,32 @@ def test_discount_factor():
 
 def test_present_value():
     assert round(present_value(100, 0.10, 1), 2) == 90.91
+
+def test_enterprise_value():
+    assert enterprise_value(
+        present_values_of_ufcf=[100, 110, 120],
+        present_value_of_terminal_value=1000,
+    ) == 1330
+
+
+def test_equity_value():
+    assert equity_value(
+        enterprise_value=1330,
+        debt=200,
+        cash=50,
+    ) == 1180
+
+
+def test_implied_share_price():
+    assert implied_share_price(
+        equity_value=1180,
+        shares_outstanding=100,
+    ) == 11.80
+
+
+def test_implied_share_price_rejects_zero_shares():
+    with pytest.raises(ValueError):
+        implied_share_price(
+            equity_value=1180,
+            shares_outstanding=0,
+        )

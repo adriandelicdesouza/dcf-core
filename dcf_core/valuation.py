@@ -23,3 +23,27 @@ def present_value_terminal_value(
     final_period: int,
 ) -> float:
     return terminal_value * discount_factor(wacc, final_period)
+
+def enterprise_value(
+    present_values_of_ufcf: list[float],
+    present_value_of_terminal_value: float,
+) -> float:
+    return sum(present_values_of_ufcf) + present_value_of_terminal_value
+
+
+def equity_value(
+    enterprise_value: float,
+    debt: float,
+    cash: float,
+) -> float:
+    return enterprise_value - debt + cash
+
+
+def implied_share_price(
+    equity_value: float,
+    shares_outstanding: float,
+) -> float:
+    if shares_outstanding <= 0:
+        raise ValueError("Shares outstanding must be greater than zero.")
+
+    return equity_value / shares_outstanding
