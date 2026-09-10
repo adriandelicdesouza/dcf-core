@@ -11,6 +11,7 @@ from dcf_core.valuation import (
     implied_share_price,
     present_value_of_ufcf,
     present_value_of_forecast,
+    calculate_dcf,
 )
 
 
@@ -157,3 +158,21 @@ def test_full_dcf_output():
     assert round(ev, 2) == 1724.91
     assert round(equity, 2) == 1574.91
     assert round(share_price, 2) == 15.75
+
+def test_calculate_dcf():
+    result = calculate_dcf(
+        ufcfs=[100, 120, 130],
+        wacc=0.10,
+        terminal_growth=0.03,
+        debt=200,
+        cash=50,
+        shares_outstanding=100,
+    )
+
+    assert round(result["present_value_of_ufcf"], 2) == 287.75
+    assert round(result["terminal_value"], 2) == 1912.86
+    assert round(result["present_value_of_terminal_value"], 2) == 1437.16
+    assert round(result["enterprise_value"], 2) == 1724.91
+    assert round(result["equity_value"], 2) == 1574.91
+    assert round(result["implied_share_price"], 2) == 15.75
+

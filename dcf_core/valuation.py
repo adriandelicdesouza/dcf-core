@@ -63,4 +63,52 @@ def present_value_of_forecast(
 ) -> float:
     return sum(present_value_of_ufcf(ufcfs, wacc))
 
+def calculate_dcf(
+    ufcfs: list[float],
+    wacc: float,
+    terminal_growth: float,
+    debt: float,
+    cash: float,
+    shares_outstanding: float,
+) -> dict:
+    present_values_of_ufcf = present_value_of_ufcf(
+        ufcfs=ufcfs,
+        wacc=wacc,
+    )
 
+    terminal_value_amount = terminal_value(
+        final_ufcf=ufcfs[-1],
+        terminal_growth=terminal_growth,
+        wacc=wacc,
+    )
+
+    present_value_of_terminal = present_value_terminal_value(
+        terminal_value=terminal_value_amount,
+        wacc=wacc,
+        final_period=len(ufcfs),
+    )
+
+    ev = enterprise_value(
+        present_values_of_ufcf=present_values_of_ufcf,
+        present_value_of_terminal_value=present_value_of_terminal,
+    )
+
+    equity = equity_value(
+        enterprise_value=ev,
+        debt=debt,
+        cash=cash,
+    )
+
+    share_price = implied_share_price(
+        equity_value=equity,
+        shares_outstanding=shares_outstanding,
+    )
+
+    return {
+        "present_value_of_ufcf": sum(present_values_of_ufcf),
+        "terminal_value": terminal_value_amount,
+        "present_value_of_terminal_value": present_value_of_terminal,
+        "enterprise_value": ev,
+        "equity_value": equity,
+        "implied_share_price": share_price,
+    }
