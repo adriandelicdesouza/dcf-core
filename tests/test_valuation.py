@@ -8,6 +8,7 @@ from dcf_core.valuation import (
     enterprise_value,
     equity_value,
     implied_share_price,
+    present_value_of_ufcf
 )
 
 def test_terminal_value():
@@ -69,3 +70,16 @@ def test_implied_share_price_rejects_zero_shares():
             equity_value=1180,
             shares_outstanding=0,
         )
+
+def test_present_value_of_ufcf():
+    ufcfs = [100, 120, 130]
+
+    pv = present_value_of_ufcf(
+        ufcfs=ufcfs,
+        wacc=0.10,
+    )
+
+    assert len(pv) == 3
+    assert round(pv[0], 2) == 90.91
+    assert round(pv[1], 2) == 99.17
+    assert round(pv[2], 2) == 97.67

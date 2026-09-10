@@ -47,3 +47,12 @@ def implied_share_price(
         raise ValueError("Shares outstanding must be greater than zero.")
 
     return equity_value / shares_outstanding
+
+def present_value_of_ufcf(
+    ufcfs: list[float],
+    wacc: float,
+) -> list[float]:
+    return [
+        present_value(ufcf, wacc, period)
+        for period, ufcf in enumerate(ufcfs, start=1)
+    ]
