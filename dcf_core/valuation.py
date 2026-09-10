@@ -62,3 +62,5 @@ def present_value_of_forecast(
     wacc: float,
 ) -> float:
     return sum(present_value_of_ufcf(ufcfs, wacc))
+
+
