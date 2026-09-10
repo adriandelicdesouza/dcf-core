@@ -8,7 +8,9 @@ from dcf_core.valuation import (
     enterprise_value,
     equity_value,
     implied_share_price,
-    present_value_of_ufcf
+    present_value_of_ufcf,
+    present_value_of_forecast,
+    terminal_value
 )
 
 def test_terminal_value():
@@ -83,3 +85,33 @@ def test_present_value_of_ufcf():
     assert round(pv[0], 2) == 90.91
     assert round(pv[1], 2) == 99.17
     assert round(pv[2], 2) == 97.67
+
+def test_present_value_of_forecast():
+    ufcfs = [100, 120, 130]
+
+    pv = present_value_of_forecast(
+        ufcfs=ufcfs,
+        wacc=0.10,
+    )
+
+    assert round(pv, 2) == 287.75
+
+def test_terminal_value():
+    tv = terminal_value(
+        final_ufcf=140,
+        terminal_growth=0.03,
+        wacc=0.10,
+    )
+
+    assert round(tv, 2) == 2060.00
+
+def test_present_value_terminal_value():
+    tv = 2060.00
+
+    pv = present_value_terminal_value(
+        terminal_value=tv,
+        wacc=0.10,
+        final_period=5,
+    )
+
+    assert round(pv, 2) == 1279.10

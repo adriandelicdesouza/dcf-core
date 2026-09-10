@@ -56,3 +56,9 @@ def present_value_of_ufcf(
         present_value(ufcf, wacc, period)
         for period, ufcf in enumerate(ufcfs, start=1)
     ]
+
+def present_value_of_forecast(
+    ufcfs: list[float],
+    wacc: float,
+) -> float:
+    return sum(present_value_of_ufcf(ufcfs, wacc))
