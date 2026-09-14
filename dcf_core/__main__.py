@@ -64,6 +64,10 @@ def main() -> None:
 
     print(f"WACC: {wacc}")
 
+    terminal_growth = float(input("Terminal growth (%): ")) / 100
+
+    print(f"Terminal growth: {terminal_growth}")
+
 
 if __name__ == "__main__":
     main()
