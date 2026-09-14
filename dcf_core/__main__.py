@@ -10,43 +10,48 @@ def main() -> None:
     print(f"Starting revenue: ${starting_revenue:.2f}M")
 
     growth_rates = []
-
-    for year in range(1, 6):
-        growth = float(input(f"Year {year} revenue growth (%): "))
-        growth_rates.append(growth / 100)
-
-    print(f"Growth rates: {growth_rates}")
-
     ebit_margins = []
+    tax_rates = []
+    d_and_a_percents = []
+    capex_percents = []
+    nwc_percents = []
 
     for year in range(1, 6):
-        margin = float(input(f"Year {year} EBIT margin (%): "))
-        ebit_margins.append(margin / 100)
+        print(f"\nYear {year}")
+        print("-------")
 
-    print(f"EBIT margins: {ebit_margins}")
+        growth_rates.append(
+            float(input("Revenue growth (%): ")) / 100
+        )
 
-    tax_rate = float(input("Tax rate (%): ")) / 100
+        ebit_margins.append(
+            float(input("EBIT margin (%): ")) / 100
+        )
 
-    print(f"Tax rate: {tax_rate}")
+        tax_rates.append(
+            float(input("Tax rate (%): ")) / 100
+        )
 
-    da_percent_revenue = float(input("D&A as % of revenue (%): ")) / 100
+        d_and_a_percents.append(
+            float(input("D&A as % of revenue (%): ")) / 100
+        )
 
-    print(f"D&A as % of revenue: {da_percent_revenue}")
+        capex_percents.append(
+            float(input("CapEx as % of revenue (%): ")) / 100
+        )
 
-    capex_percent_revenue = float(input("CapEx as % of revenue (%): ")) / 100
-
-    print(f"CapEx as % of revenue: {capex_percent_revenue}")
-
-    nwc_percent_revenue = float(input("Change in NWC as % of revenue (%): ")) / 100
+        nwc_percents.append(
+            float(input("Change in NWC as % of revenue (%): ")) / 100
+        )
 
     ufcfs = forecast_ufcf(
         starting_revenue=starting_revenue,
         growth_rates=growth_rates,
-        ebit_margin=ebit_margins[0],
-        tax_rate=tax_rate,
-        d_and_a_percent=da_percent_revenue,
-        capex_percent=capex_percent_revenue,
-        nwc_percent=nwc_percent_revenue,
+        ebit_margins=ebit_margins,
+        tax_rates=tax_rates,
+        d_and_a_percents=d_and_a_percents,
+        capex_percents=capex_percents,
+        nwc_percents=nwc_percents,
     )
 
     print("\nForecast UFCF")

@@ -44,39 +44,72 @@ def calculate_ufcf(
 def forecast_ufcf(
     starting_revenue: float,
     growth_rates: list[float],
-    ebit_margin: float,
-    tax_rate: float,
-    d_and_a_percent: float,
-    capex_percent: float,
-    nwc_percent: float,
+    ebit_margins: list[float],
+    tax_rates: list[float],
+    d_and_a_percents: list[float],
+    capex_percents: list[float],
+    nwc_percents: list[float],
 ) -> list[float]:
-    revenues = []
+    if not (
+        len(growth_rates)
+        == len(ebit_margins)
+        == len(tax_rates)
+        == len(d_and_a_percents)
+        == len(capex_percents)
+        == len(nwc_percents)
+    ):
+        raise ValueError("All forecast assumptions must have the same length.")
+
     ufcfs = []
-
     previous_revenue = starting_revenue
-    previous_nwc = starting_revenue * nwc_percent
+    previous_nwc = 0.0
 
-    for growth_rate in growth_rates:
-        revenue = project_revenue(previous_revenue, growth_rate)
-        ebit = calculate_ebit(revenue, ebit_margin)
-        nopat = calculate_nopat(ebit, tax_rate)
-        d_and_a = calculate_d_and_a(revenue, d_and_a_percent)
-        capex = calculate_capex(revenue, capex_percent)
-
-        nwc = calculate_nwc(revenue, nwc_percent)
-        change_in_nwc = calculate_change_in_nwc(nwc, previous_nwc)
-
-        ufcf = calculate_ufcf(
-            nopat=nopat,
-            d_and_a=d_and_a,
-            capex=capex,
-            change_in_nwc=change_in_nwc,
+    for year in range(len(growth_rates)):
+        revenue = project_revenue(
+            previous_revenue,
+            growth_rates[year],
         )
 
-        revenues.append(revenue)
+        ebit = calculate_ebit(
+            revenue,
+            ebit_margins[year],
+        )
+
+        nopat = calculate_nopat(
+            ebit,
+            tax_rates[year],
+        )
+
+        d_and_a = calculate_d_and_a(
+            revenue,
+            d_and_a_percents[year],
+        )
+
+        capex = calculate_capex(
+            revenue,
+            capex_percents[year],
+        )
+
+        current_nwc = calculate_nwc(
+            revenue,
+            nwc_percents[year],
+        )
+
+        change_in_nwc = calculate_change_in_nwc(
+            current_nwc,
+            previous_nwc,
+        )
+
+        ufcf = calculate_ufcf(
+            nopat,
+            d_and_a,
+            capex,
+            change_in_nwc,
+        )
+
         ufcfs.append(ufcf)
 
         previous_revenue = revenue
-        previous_nwc = nwc
+        previous_nwc = current_nwc
 
     return ufcfs

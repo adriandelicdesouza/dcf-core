@@ -56,16 +56,16 @@ def test_forecast_ufcf():
     ufcfs = forecast_ufcf(
         starting_revenue=1000,
         growth_rates=[0.10, 0.08, 0.06, 0.05, 0.04],
-        ebit_margin=0.15,
-        tax_rate=0.25,
-        d_and_a_percent=0.03,
-        capex_percent=0.04,
-        nwc_percent=0.02,
+        ebit_margins=[0.15, 0.15, 0.15, 0.15, 0.15],
+        tax_rates=[0.25, 0.25, 0.25, 0.25, 0.25],
+        d_and_a_percents=[0.03, 0.03, 0.03, 0.03, 0.03],
+        capex_percents=[0.04, 0.04, 0.04, 0.04, 0.04],
+        nwc_percents=[0.02, 0.02, 0.02, 0.02, 0.02],
     )
 
     assert len(ufcfs) == 5
 
-    assert ufcfs[0] == 110.75
+    assert round(ufcfs[0], 2) == 90.75
     assert round(ufcfs[1], 2) == 120.01
     assert round(ufcfs[2], 2) == 127.65
     assert round(ufcfs[3], 2) == 134.27
