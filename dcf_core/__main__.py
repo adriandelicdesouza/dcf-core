@@ -1,3 +1,6 @@
+from dcf_core.forecast import forecast_ufcf
+
+
 def main() -> None:
     print("DCF Valuation")
     print("=============")
@@ -5,6 +8,7 @@ def main() -> None:
     starting_revenue = float(input("Starting revenue ($M): "))
 
     print(f"Starting revenue: ${starting_revenue:.2f}M")
+
     growth_rates = []
 
     for year in range(1, 6):
@@ -35,7 +39,26 @@ def main() -> None:
 
     nwc_percent_revenue = float(input("Change in NWC as % of revenue (%): ")) / 100
 
-    print(f"Change in NWC as % of revenue: {nwc_percent_revenue}")
+    ufcfs = forecast_ufcf(
+        starting_revenue=starting_revenue,
+        growth_rates=growth_rates,
+        ebit_margin=ebit_margins[0],
+        tax_rate=tax_rate,
+        d_and_a_percent=da_percent_revenue,
+        capex_percent=capex_percent_revenue,
+        nwc_percent=nwc_percent_revenue,
+    )
+
+    print("\nForecast UFCF")
+    print("=============")
+
+    for year, ufcf in enumerate(ufcfs, start=1):
+        print(f"Year {year}: ${ufcf:.2f}M")
+
+    wacc = float(input("WACC (%): ")) / 100
+
+    print(f"WACC: {wacc}")
+
 
 if __name__ == "__main__":
     main()
