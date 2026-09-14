@@ -86,5 +86,15 @@ def main() -> None:
         shares_outstanding=shares_outstanding,
     )
 
+    print("\nDCF Valuation")
+    print("=============")
+
+    print(f"PV of UFCF: ${result['present_value_of_ufcf']:.2f}M")
+    print(f"Terminal Value: ${result['terminal_value']:.2f}M")
+    print(f"PV of Terminal Value: ${result['present_value_of_terminal_value']:.2f}M")
+    print(f"Enterprise Value: ${result['enterprise_value']:.2f}M")
+    print(f"Equity Value: ${result['equity_value']:.2f}M")
+    print(f"Implied Share Price: ${result['implied_share_price']:.2f}")
+
 if __name__ == "__main__":
     main()
