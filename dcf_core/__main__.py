@@ -1,5 +1,5 @@
 from dcf_core.forecast import forecast_ufcf
-
+from dcf_core.valuation import calculate_dcf
 
 def main() -> None:
     print("DCF Valuation")
@@ -68,6 +68,23 @@ def main() -> None:
 
     print(f"Terminal growth: {terminal_growth}")
 
+    debt = float(input("Debt ($M): "))
+    print(f"Debt: ${debt:.2f}M")
+
+    cash = float(input("Cash ($M): "))
+    print(f"Cash: ${cash:.2f}M")
+
+    shares_outstanding = float(input("Shares outstanding (M): "))
+    print(f"Shares outstanding: {shares_outstanding:.2f}M")
+
+    result = calculate_dcf(
+        ufcfs=ufcfs,
+        wacc=wacc,
+        terminal_growth=terminal_growth,
+        debt=debt,
+        cash=cash,
+        shares_outstanding=shares_outstanding,
+    )
 
 if __name__ == "__main__":
     main()
